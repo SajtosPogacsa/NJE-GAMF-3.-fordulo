@@ -126,9 +126,10 @@
 //asdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 using System.Collections.Generic;
 
-Dictionary<string, List<string>> szamok = new();
 
+Dictionary<string, List<string>> szamokRaw = new();
 
+//számjegyek
 for (int i = 1; i < 10; i++)
 {
     for (int j = 1; j < 10; j++)
@@ -137,13 +138,16 @@ for (int i = 1; i < 10; i++)
         {
             for (int l = 1; l < 10; l++)
             {
-                szamok.Add($"{i}{j}{k}{l}", new());
+                string num = $"{i}{j}{k}{l}";
+                szamokRaw.Add(num, new());
             }
         }
     }
 }
 
-foreach (var item in szamok)
+
+//permutációk
+foreach (var item in szamokRaw)
 {
     List<string> duplicate = new();
     for (int i = 0; i < 4; i++)
@@ -160,7 +164,7 @@ foreach (var item in szamok)
                     string szam = $"{item.Key[i]}{item.Key[j]}{item.Key[k]}{item.Key[l]}";
                     if (!duplicate.Contains(szam))
                     {
-                        szamok[item.Key].Add(szam);
+                        szamokRaw[item.Key].Add(szam);
                         duplicate.Add(szam);
                     }
                 }
@@ -189,8 +193,40 @@ static bool IsPrime(long number)
     return true;
 }
 
+Dictionary<string, List<string>> szamok = new();
+List<List<string>> vótmámore = new();
+//számnégyes duplikációk szűrése
+foreach (var negyes in szamokRaw)
+{
+    bool dupl = false;
+    List<string> value = negyes.Value.OrderBy(x => x).ToList();
+    if (vótmámore.Count == 0)
+    {
+        vótmámore.Add(value);
+        szamok.Add(negyes.Key, value);
+        continue;
+    }
+    foreach (var vót in vótmámore)
+    {
+        var vótOrd = vót.OrderBy(x => x).ToList();
+        if (value.SequenceEqual(vótOrd))
+        {
+            dupl = true;
+            break;
+        }
+    }
+
+    if(!dupl)
+    {
+        vótmámore.Add(value);
+        szamok.Add(negyes.Key, value);
+    }
+}
+
+
 Dictionary<string, List<string>> Primes = new();
 
+//számlálás
 int counter = 0;
 foreach (var item in szamok)
 {
@@ -206,20 +242,27 @@ foreach (var item in szamok)
     }
     if (primeCounter > 5) counter++;
 }
+Console.WriteLine(counter);
 
 
-int index = 1;
 foreach (var item in Primes)
 {
-    if (item.Value.Count < 6) continue;
-    Console.Write($"{index}.{item.Key}->");
-    foreach (var p in item.Value)
+    bool found = false;
+    if (item.Value.Count < 3) continue;
+    for (int i = 0; i < item.Value.Count - 2; i++)
     {
-        Console.Write(p + " ");
+        int fnum = int.Parse(item.Value[i]);
+        int snum = int.Parse(item.Value[i + 1]);
+        int tnum = int.Parse(item.Value[i + 2]);
+        int dif = snum - fnum;
+        if (fnum + dif == snum && snum + dif == tnum)
+        {
+            Console.WriteLine($"{fnum} {snum} {tnum}");
+            found = true;
+            break;
+        }
     }
-    index++;
-    Console.WriteLine();
+    if (found) break;
 }
 
-Console.WriteLine(counter);
 
