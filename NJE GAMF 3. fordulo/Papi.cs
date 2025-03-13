@@ -6,7 +6,7 @@ class Papi
     public bool Infected = false;
     public bool WasInfected = false;
     public int InfCD = -1;
-    public int InfStep = -1;
+    public int InfStep = int.MaxValue;
     public List<int> Contacts = [];
 
     public Papi(int id)
@@ -14,18 +14,11 @@ class Papi
         this.Id = id;
     }
 
-    public void Infect(ref List<Papi> list, int curStep)
+    public void Infect(Papi target, int curStep)
     {
-        if (this.Infected && this.InfStep == curStep)
+        if (this.Infected && this.InfStep < curStep && !target.WasInfected)
         {
-            foreach (var c in this.Contacts)
-            {
-                Papi contact = list[c - 1];
-                if (!contact.WasInfected && !contact.Infected)
-                {
-                    contact.GetInfected(curStep + 1);
-                }
-            }
+            target.GetInfected(curStep);
         }
     }
 
@@ -46,6 +39,7 @@ class Papi
             {
                 this.Infected = false;
                 this.WasInfected = true;
+                this.InfCD = -1;
             }
         }
     }

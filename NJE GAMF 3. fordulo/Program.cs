@@ -268,11 +268,12 @@
 
 List<Papi> papik = new();
 
-for (int i = 1; i < 267; i++)
+for (int i = 1; i < 300; i++)
 {
     papik.Add(new Papi(i));
+    if (i == 2) papik.Find(x => x.Id == 2).GetInfected(1);
 }
-using(StreamReader sr = new("elek.txt"))
+using (StreamReader sr = new("elek.txt"))
 {
     while (!sr.EndOfStream)
     {
@@ -285,14 +286,37 @@ using(StreamReader sr = new("elek.txt"))
     }
 }
 
-for (int i = 0; i < 11; i++)
+int counter = 1;
+int step = 1;
+while (papik.Count(x => x.Infected) != 0)
 {
-    if (i==0) papik[1].GetInfected(i);
     foreach (Papi p in papik)
     {
         p.InfTick();
-        p.Infect(ref papik, i);
     }
+    using (StreamReader sr = new("elek.txt"))
+    {
+        while (!sr.EndOfStream)
+        {
+            string[] talalkozas = sr.ReadLine().Split(' ');
+            int elso = int.Parse(talalkozas[0]);
+            int masodik = int.Parse(talalkozas[1]);
+            papik[elso - 1].Infect(papik[masodik - 1], step);
+        }
+    }
+    if(counter == 5)
+    {
+        Console.WriteLine($"Az 5. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+    }
+    if(counter == 11)
+    {
+        Console.WriteLine($"A 11. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+    }
+    if(papik.Count(x => x.Infected) == 0)
+    {
+        Console.WriteLine($"A {counter}. lépésben lesz 0 a fertőzöttek száma!");
+    }
+    counter++;
+    step++;
 }
 
-Console.WriteLine(papik.Count(x => x.Infected));
