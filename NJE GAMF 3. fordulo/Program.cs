@@ -2,16 +2,16 @@
 
 //using (StreamReader sr = new("dobozok.txt"))
 //{
-//    while(!sr.EndOfStream)
+//    while (!sr.EndOfStream)
 //    {
 //        char doboz = (char)sr.Read();
-//        if(doboz == 'A')
+//        if (doboz == 'A')
 //        {
 //            char[] csh = new char[3];
 //            csh[0] = doboz;
 //            csomagolóhelyek.Add(csh);
 //        }
-//        else if(doboz == 'B')
+//        else if (doboz == 'B')
 //        {
 //            try
 //            {
@@ -24,7 +24,7 @@
 //                csomagolóhelyek.Add(csh);
 //            }
 //        }
-//        else if(doboz == 'C')
+//        else if (doboz == 'C')
 //        {
 //            if (csomagolóhelyek.Where(x => x[0] == 'A' && x[1] == 'B' && x[2] != 'C').FirstOrDefault() != default)
 //            {
@@ -124,145 +124,175 @@
 
 
 //asdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
 
-Dictionary<string, List<string>> szamokRaw = new();
+//Dictionary<string, List<string>> szamokRaw = new();
 
-//számjegyek
-for (int i = 1; i < 10; i++)
+////számjegyek
+//for (int i = 1; i < 10; i++)
+//{
+//    for (int j = 1; j < 10; j++)
+//    {
+//        for (int k = 1; k < 10; k++)
+//        {
+//            for (int l = 1; l < 10; l++)
+//            {
+//                string num = $"{i}{j}{k}{l}";
+//                szamokRaw.Add(num, new());
+//            }
+//        }
+//    }
+//}
+
+
+////permutációk
+//foreach (var item in szamokRaw)
+//{
+//    List<string> duplicate = new();
+//    for (int i = 0; i < 4; i++)
+//    {
+//        for (int j = 0; j < 4; j++)
+//        {
+//            if (j == i) continue;
+//            for (int k = 0; k < 4; k++)
+//            {
+//                if (k == j || k == i) continue;
+//                for (int l = 0; l < 4; l++)
+//                {
+//                    if (l == k || l == j || l == i) continue;
+//                    string szam = $"{item.Key[i]}{item.Key[j]}{item.Key[k]}{item.Key[l]}";
+//                    if (!duplicate.Contains(szam))
+//                    {
+//                        szamokRaw[item.Key].Add(szam);
+//                        duplicate.Add(szam);
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+
+//static bool IsPrime(long number)
+//{
+//    // Kezeljük a speciális eseteket
+//    if (number <= 1)
+//        return false;
+//    if (number == 2 || number == 3)
+//        return true;
+//    if (number % 2 == 0 || number % 3 == 0)
+//        return false;
+
+//    // Csak a 6k ± 1 alakú számokat ellenőrizzük
+//    for (long i = 5; i * i <= number; i += 6)
+//    {
+//        if (number % i == 0 || number % (i + 2) == 0)
+//            return false;
+//    }
+
+//    return true;
+//}
+
+//Dictionary<string, List<string>> szamok = new();
+//List<List<string>> vótmámore = new();
+////számnégyes duplikációk szűrése
+//foreach (var negyes in szamokRaw)
+//{
+//    bool dupl = false;
+//    List<string> value = negyes.Value.OrderBy(x => x).ToList();
+//    if (vótmámore.Count == 0)
+//    {
+//        vótmámore.Add(value);
+//        szamok.Add(negyes.Key, value);
+//        continue;
+//    }
+//    foreach (var vót in vótmámore)
+//    {
+//        var vótOrd = vót.OrderBy(x => x).ToList();
+//        if (value.SequenceEqual(vótOrd))
+//        {
+//            dupl = true;
+//            break;
+//        }
+//    }
+
+//    if(!dupl)
+//    {
+//        vótmámore.Add(value);
+//        szamok.Add(negyes.Key, value);
+//    }
+//}
+
+
+//Dictionary<string, List<string>> Primes = new();
+
+////számlálás
+//int counter = 0;
+//foreach (var item in szamok)
+//{
+//    int primeCounter = 0;
+//    foreach (var num in item.Value)
+//    {
+//        if (IsPrime(int.Parse(num)))
+//        {
+//            if (!Primes.ContainsKey(item.Key)) Primes.Add(item.Key, new());
+//            Primes[item.Key].Add(num);
+//            primeCounter++;
+//        }
+//    }
+//    if (primeCounter > 5) counter++;
+//}
+//Console.WriteLine(counter);
+
+
+//foreach (var item in Primes)
+//{
+//    bool found = false;
+//    if (item.Value.Count < 3) continue;
+//    for (int i = 0; i < item.Value.Count - 2; i++)
+//    {
+//        int fnum = int.Parse(item.Value[i]);
+//        int snum = int.Parse(item.Value[i + 1]);
+//        int tnum = int.Parse(item.Value[i + 2]);
+//        int dif = snum - fnum;
+//        if (fnum + dif == snum && snum + dif == tnum)
+//        {
+//            Console.WriteLine($"{fnum} {snum} {tnum}");
+//            found = true;
+//            break;
+//        }
+//    }
+//    if (found) break;
+//}
+
+
+List<Papi> papik = new();
+
+for (int i = 1; i < 267; i++)
 {
-    for (int j = 1; j < 10; j++)
+    papik.Add(new Papi(i));
+}
+using(StreamReader sr = new("elek.txt"))
+{
+    while (!sr.EndOfStream)
     {
-        for (int k = 1; k < 10; k++)
-        {
-            for (int l = 1; l < 10; l++)
-            {
-                string num = $"{i}{j}{k}{l}";
-                szamokRaw.Add(num, new());
-            }
-        }
+        string[] line = sr.ReadLine().Split(' ');
+        int id = int.Parse(line[0]);
+        int contact = int.Parse(line[1]);
+        papik.Find(x => x.Id == id).Contacts.Add(contact);
+        if (!papik.Find(x => x.Id == contact).Contacts.Contains(id))
+            papik.Find(x => x.Id == contact).Contacts.Add(id);
     }
 }
 
-
-//permutációk
-foreach (var item in szamokRaw)
+for (int i = 0; i < 11; i++)
 {
-    List<string> duplicate = new();
-    for (int i = 0; i < 4; i++)
+    if (i==0) papik[1].GetInfected(i);
+    foreach (Papi p in papik)
     {
-        for (int j = 0; j < 4; j++)
-        {
-            if (j == i) continue;
-            for (int k = 0; k < 4; k++)
-            {
-                if (k == j || k == i) continue;
-                for (int l = 0; l < 4; l++)
-                {
-                    if (l == k || l == j || l == i) continue;
-                    string szam = $"{item.Key[i]}{item.Key[j]}{item.Key[k]}{item.Key[l]}";
-                    if (!duplicate.Contains(szam))
-                    {
-                        szamokRaw[item.Key].Add(szam);
-                        duplicate.Add(szam);
-                    }
-                }
-            }
-        }
+        p.InfTick();
+        p.Infect(ref papik, i);
     }
 }
 
-static bool IsPrime(long number)
-{
-    // Kezeljük a speciális eseteket
-    if (number <= 1)
-        return false;
-    if (number == 2 || number == 3)
-        return true;
-    if (number % 2 == 0 || number % 3 == 0)
-        return false;
-
-    // Csak a 6k ± 1 alakú számokat ellenőrizzük
-    for (long i = 5; i * i <= number; i += 6)
-    {
-        if (number % i == 0 || number % (i + 2) == 0)
-            return false;
-    }
-
-    return true;
-}
-
-Dictionary<string, List<string>> szamok = new();
-List<List<string>> vótmámore = new();
-//számnégyes duplikációk szűrése
-foreach (var negyes in szamokRaw)
-{
-    bool dupl = false;
-    List<string> value = negyes.Value.OrderBy(x => x).ToList();
-    if (vótmámore.Count == 0)
-    {
-        vótmámore.Add(value);
-        szamok.Add(negyes.Key, value);
-        continue;
-    }
-    foreach (var vót in vótmámore)
-    {
-        var vótOrd = vót.OrderBy(x => x).ToList();
-        if (value.SequenceEqual(vótOrd))
-        {
-            dupl = true;
-            break;
-        }
-    }
-
-    if(!dupl)
-    {
-        vótmámore.Add(value);
-        szamok.Add(negyes.Key, value);
-    }
-}
-
-
-Dictionary<string, List<string>> Primes = new();
-
-//számlálás
-int counter = 0;
-foreach (var item in szamok)
-{
-    int primeCounter = 0;
-    foreach (var num in item.Value)
-    {
-        if (IsPrime(int.Parse(num)))
-        {
-            if (!Primes.ContainsKey(item.Key)) Primes.Add(item.Key, new());
-            Primes[item.Key].Add(num);
-            primeCounter++;
-        }
-    }
-    if (primeCounter > 5) counter++;
-}
-Console.WriteLine(counter);
-
-
-foreach (var item in Primes)
-{
-    bool found = false;
-    if (item.Value.Count < 3) continue;
-    for (int i = 0; i < item.Value.Count - 2; i++)
-    {
-        int fnum = int.Parse(item.Value[i]);
-        int snum = int.Parse(item.Value[i + 1]);
-        int tnum = int.Parse(item.Value[i + 2]);
-        int dif = snum - fnum;
-        if (fnum + dif == snum && snum + dif == tnum)
-        {
-            Console.WriteLine($"{fnum} {snum} {tnum}");
-            found = true;
-            break;
-        }
-    }
-    if (found) break;
-}
-
-
+Console.WriteLine(papik.Count(x => x.Infected));
