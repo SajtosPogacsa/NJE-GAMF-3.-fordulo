@@ -113,19 +113,19 @@ static bool IsPrime(long number)
 }
 
 Dictionary<string, List<string>> szamok = new();
-List<List<string>> vótmámore = new();
+List<List<string>> duplicatedPairs = new();
 //számnégyes duplikációk szűrése
 foreach (var negyes in szamokRaw)
 {
     bool dupl = false;
     List<string> value = negyes.Value.OrderBy(x => x).ToList();
-    if (vótmámore.Count == 0)
+    if (duplicatedPairs.Count == 0)
     {
-        vótmámore.Add(value);
+        duplicatedPairs.Add(value);
         szamok.Add(negyes.Key, value);
         continue;
     }
-    foreach (var vót in vótmámore)
+    foreach (var vót in duplicatedPairs)
     {
         var vótOrd = vót.OrderBy(x => x).ToList();
         if (value.SequenceEqual(vótOrd))
@@ -137,7 +137,7 @@ foreach (var negyes in szamokRaw)
 
     if (!dupl)
     {
-        vótmámore.Add(value);
+        duplicatedPairs.Add(value);
         szamok.Add(negyes.Key, value);
     }
 }
@@ -150,8 +150,10 @@ int counter = 0;
 foreach (var item in szamok)
 {
     int primeCounter = 0;
+    
     foreach (var num in item.Value)
     {
+        if (num[0] == '0') Console.WriteLine($"{int.Parse(num)}");
         if (IsPrime(int.Parse(num)))
         {
             if (!Primes.ContainsKey(item.Key)) Primes.Add(item.Key, new());
@@ -162,7 +164,6 @@ foreach (var item in szamok)
     if (primeCounter > 5) counter++;
 }
 Console.WriteLine(counter);
-
 
 foreach (var item in Primes)
 {
@@ -205,7 +206,6 @@ using (StreamReader sr = new("elek.txt"))
     }
 }
 
-int counterV = 1;
 int step = 1;
 while (papik.Count(x => x.Infected) != 0)
 {
@@ -223,23 +223,22 @@ while (papik.Count(x => x.Infected) != 0)
             papik[elso - 1].Infect(papik[masodik - 1], step);
         }
     }
-    if(counterV == 5)
+    if(step == 5)
     {
         Console.WriteLine($"Az 5. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
     }
-    if(counterV == 11)
+    if(step == 11)
     {
         Console.WriteLine($"A 11. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
     }
-    if (counterV == 13)
+    if (step == 13)
     {
         Console.WriteLine($"A 13. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
     }
     if (papik.Count(x => x.Infected) == 0)
     {
-        Console.WriteLine($"A {counterV}. lépésben lesz 0 a fertőzöttek száma!");
+        Console.WriteLine($"A {step}. lépésben lesz 0 a fertőzöttek száma!");
     }
-    counterV++;
     step++;
 }
 
