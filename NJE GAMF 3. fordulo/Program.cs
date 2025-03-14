@@ -153,7 +153,6 @@ foreach (var item in szamok)
     
     foreach (var num in item.Value)
     {
-        if (num[0] == '0') Console.WriteLine($"{int.Parse(num)}");
         if (IsPrime(int.Parse(num)))
         {
             if (!Primes.ContainsKey(item.Key)) Primes.Add(item.Key, new());
@@ -191,7 +190,11 @@ List<Papi> papik = new();
 for (int i = 1; i < 300; i++)
 {
     papik.Add(new Papi(i));
-    if (i == 2) papik.Find(x => x.Id == 2).GetInfected(1);
+    if (i == 2)
+    {
+        papik.Find(x => x.Id == 2).GetInfected(1);
+        papik.Find(x => x.Id == 2).InfCD++;
+    }
 }
 using (StreamReader sr = new("elek.txt"))
 {
@@ -231,9 +234,21 @@ while (papik.Count(x => x.Infected) != 0)
     {
         Console.WriteLine($"A 11. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
     }
-    if (step == 13)
+    if (step == 10)
     {
-        Console.WriteLine($"A 13. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+        Console.WriteLine($"A 10. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+    }
+    if (step == 9)
+    {
+        Console.WriteLine($"A 9. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+    }
+    if (step == 8)
+    {
+        Console.WriteLine($"A 8. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
+    }
+    if (step == 7)
+    {
+        Console.WriteLine($"A 7. lépésben a fertőzöttek száma: {papik.Count(x => x.Infected)}");
     }
     if (papik.Count(x => x.Infected) == 0)
     {
